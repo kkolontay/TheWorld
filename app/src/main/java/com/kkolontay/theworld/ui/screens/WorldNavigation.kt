@@ -41,7 +41,9 @@ fun WorldNavigation(
     var title = rememberSaveable {
         mutableStateOf("List")
     }
-
+    var choosenCountry = remember {
+        mutableStateOf<Country>(Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(png = "some")))
+    }
     Scaffold(
         topBar = {
             AppBar(
@@ -59,42 +61,16 @@ fun WorldNavigation(
             viewModel.fetchCountryList()
         }
 
-       // val uiState by viewModel.uiState.value
-//        val countries = remember {
-//            listOf(
-//            Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-//        )
-//            ),
-//            Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-//        )
-//            ), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-//        )
-//            ), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-//        )
-//            ), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-//        )
-//            )
-//        )
-//        }
-
-        //val uiState by viewModel.uiState.collectAsState()
         NavHost(navController = navController, startDestination = AppScreens.ListCountry.name, modifier = Modifier.padding(innerPadding)) {
             composable(AppScreens.ListCountry.name) {
                 CountryList(countries = uiState.collectAsState().value) {
-                   // choosenCountry.value = it
+                    choosenCountry.value = it
                     title.value = it.name.common
                     navController.navigate(AppScreens.CountryDetail.name)
                 }
             }
             composable(AppScreens.CountryDetail.name) {
-                CountryItemDetail(country = Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-       png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-      )), navigateUP = {
+                CountryItemDetail(country = choosenCountry.value, navigateUP = {
                     navController.previousBackStackEntry
                 })
             }

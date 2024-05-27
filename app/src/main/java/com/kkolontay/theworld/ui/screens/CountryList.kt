@@ -19,20 +19,6 @@ import com.kkolontay.theworld.ui.theme.TheWorldTheme
 
 @Composable
 fun CountryList(countries: List<Country>, nextScreen: (Country) -> Unit) {
-  //  val countriesState by rememberSaveable { mutableStateOf( listOf<Country>()) }
-//val countries = remember {
-//    listOf(Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//        png = "some"
-//    )),Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//        png = "some"
-//    )), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//        png = "some"
-//    )), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//        png = "some"
-//    )), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//        png = "some"
-//    )))
-//}
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(16.dp)
