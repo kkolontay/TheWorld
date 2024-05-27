@@ -23,7 +23,7 @@ fun CountryItemDetail(country: Country, navigateUP: () -> Unit, modifier: Modifi
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Row {
             Text(text = "Capital: ")
-            Text(text = country.name.common)
+            Text(text = country.name.common.toString())
         }
         Row {
             Text(text = "Population: ")

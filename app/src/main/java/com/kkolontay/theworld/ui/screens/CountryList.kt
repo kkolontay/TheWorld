@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,7 +19,7 @@ import com.kkolontay.theworld.ui.theme.TheWorldTheme
 
 @Composable
 fun CountryList(countries: List<Country>, nextScreen: (Country) -> Unit) {
-   // val countries = rememberSaveable() { mutableStateOf(mutableListOf<Country>()) }
+  //  val countriesState by rememberSaveable { mutableStateOf( listOf<Country>()) }
 //val countries = remember {
 //    listOf(Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
 //        png = "some"
