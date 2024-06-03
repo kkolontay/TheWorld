@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 fun InfoView(modifier: Modifier = Modifier
     .fillMaxWidth()
     .padding(16.dp), taps: Int, refresh: () -> Unit, back: Int) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween ) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically ) {
         Row {
             Text("Taps: ")
             Text("$taps", modifier = Modifier.padding(start = 8.dp))
