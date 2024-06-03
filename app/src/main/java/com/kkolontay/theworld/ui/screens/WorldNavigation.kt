@@ -57,9 +57,7 @@ fun WorldNavigation(
         }
     ) { innerPadding ->
         val uiState = remember {viewModel.uiState}
-        LaunchedEffect(Unit) {
-            viewModel.fetchCountryList()
-        }
+
 
         NavHost(navController = navController, startDestination = AppScreens.ListCountry.name, modifier = Modifier.padding(innerPadding)) {
             composable(AppScreens.ListCountry.name) {

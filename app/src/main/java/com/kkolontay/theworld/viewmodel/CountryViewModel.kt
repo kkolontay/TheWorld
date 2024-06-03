@@ -4,11 +4,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkolontay.theworld.api.ApiBuilder
+import com.kkolontay.theworld.api.ApiInterface
 import com.kkolontay.theworld.api.WorldResponse
 import com.kkolontay.theworld.model.Country
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class CountryViewModel : ViewModel() {
@@ -16,17 +20,21 @@ class CountryViewModel : ViewModel() {
     val uiState = _uiState.asStateFlow()
     private val apiService = ApiBuilder.apiService
 
-    fun fetchCountryList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = apiService.fetchCountryList()
-                _uiState.value = WorldResponse.Success(response)
-                Log.i("Country", response.toString())
-            } catch (e: Exception) {
-                Log.i("TAG", e.message.toString())
-                Log.i("TAG", e.localizedMessage.toString())
+    init {
+        viewModelScope.launch {
+            getCountryInfoFlow().catch {
                 _uiState.value = WorldResponse.ErrorResponse()
             }
+                .collect {
+                    _uiState.value = it
+                }
+        }
+    }
+
+    private fun getCountryInfoFlow(): Flow<WorldResponse> {
+      return  flow<WorldResponse> {
+            var response = apiService.fetchCountryList()
+            emit(WorldResponse.Success(response))
         }
     }
 }
