@@ -18,3 +18,5 @@ data class Country(
     @Json(name = "population") val population: Long,
     @Json(name = "area") val area: Double,
     @Json(name = "flags") val flags: CountryFlags)
+
+

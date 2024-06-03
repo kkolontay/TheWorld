@@ -7,3 +7,10 @@ interface ApiInterface {
         @GET("all")
         suspend fun fetchCountryList(): List<Country>
 }
+
+sealed class WorldResponse {
+        class Success(val list: List<Country>): WorldResponse()
+        class Loading(): WorldResponse()
+        class ErrorResponse(): WorldResponse()
+
+}
