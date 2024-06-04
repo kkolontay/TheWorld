@@ -61,6 +61,7 @@ class CountryViewModel : ViewModel() {
 
     fun refresh() {
         _uiState.value = WorldResponse.Loading()
+        flows.counter = 0
         viewModelScope.launch {
             getCountryInfoFlow().catch {
                 _uiState.value = WorldResponse.ErrorResponse()
