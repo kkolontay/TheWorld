@@ -63,6 +63,12 @@ class CountryViewModel : ViewModel() {
         _uiState.value = WorldResponse.Loading()
         flows.counter = 0
         viewModelScope.launch {
+            flows.timer.collect {
+                _timerState.value = it
+                println(it)
+            }
+        }
+        viewModelScope.launch {
             getCountryInfoFlow().catch {
                 _uiState.value = WorldResponse.ErrorResponse()
             }
