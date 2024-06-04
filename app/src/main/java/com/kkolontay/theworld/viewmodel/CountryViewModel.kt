@@ -1,28 +1,16 @@
 package com.kkolontay.theworld.viewmodel
 
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkolontay.theworld.api.ApiBuilder
-import com.kkolontay.theworld.api.ApiInterface
 import com.kkolontay.theworld.api.WorldResponse
 import com.kkolontay.theworld.flow.Flows
-import com.kkolontay.theworld.model.Country
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 
 class CountryViewModel : ViewModel() {
@@ -69,6 +57,19 @@ class CountryViewModel : ViewModel() {
             }
         }
 
+    }
+
+    fun refresh() {
+        _uiState.value = WorldResponse.Loading()
+        viewModelScope.launch {
+            getCountryInfoFlow().catch {
+                _uiState.value = WorldResponse.ErrorResponse()
+            }
+                .collect {
+                    _uiState.value = it
+                    flows.counter = 1_000_000
+                }
+        }
     }
 
     private fun getCountryInfoFlow(): Flow<WorldResponse> {

@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kkolontay.theworld.R
+import com.kkolontay.theworld.api.WorldResponse
 import com.kkolontay.theworld.model.Country
 import com.kkolontay.theworld.model.CountryFlags
 import com.kkolontay.theworld.model.CountryName
@@ -62,7 +63,12 @@ fun WorldNavigation(
 
         NavHost(navController = navController, startDestination = AppScreens.ListCountry.name, modifier = Modifier.padding(innerPadding)) {
             composable(AppScreens.ListCountry.name) {
-                CountryList(countries = uiState.collectAsState().value, timer = timerState.value, taps = tap.value, back = back.value,) {
+                CountryList(countries = uiState.collectAsState().value, timer = timerState.value, taps = tap.value, back = back.value, refresh = {
+                   MainScope().launch {
+                       viewModel.flows.refresh()
+                       viewModel.refresh()
+                   }
+                }) {
                     choosenCountry.value = it
                     MainScope().launch {
                         viewModel.flows.tap()
@@ -72,7 +78,13 @@ fun WorldNavigation(
                 }
             }
             composable(AppScreens.CountryDetail.name) {
-                CountryItemDetail(country = choosenCountry.value, taps = tap.value, back = back.value)
+                CountryItemDetail(country = choosenCountry.value, taps = tap.value, back = back.value, refresh = {
+                    MainScope().launch {
+                        viewModel.flows.refresh()
+                        viewModel.refresh()
+                    }
+                    navController.navigateUp()
+                })
             }
         }
     }
