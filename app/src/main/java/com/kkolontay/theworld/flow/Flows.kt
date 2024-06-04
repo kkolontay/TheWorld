@@ -1,51 +1,53 @@
 package com.kkolontay.theworld.flow
-
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.transform
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.flow
 
-object Flows {
-    var tapFlow: StateFlow<Int> = MutableStateFlow(0)
-    var backFlow: StateFlow<Int> = MutableStateFlow(0)
-    var counterFlow: StateFlow<Int> = MutableStateFlow(0)
+public object Flows {
+    private var tapFlow = MutableStateFlow(0)
+    private var backFlow = MutableStateFlow(0)
+    var counter = 0
+    var tap = 0
+    var back = 0
 
-init {
-    GlobalScope.launch {
-        counterFlow.onEach {
-            delay(1_000_000)
-
-        }.onStart {
-                emit(0)
-            }
-            .transform {
-                emit((counterFlow.value + 1))
-            }
+    public suspend fun tap() {
+        tap += 1
+        tapFlow.emit(tap)
     }
-}
-    fun tap() {
-        tapFlow
-            .transform {
-                emit(tapFlow.value + 1)
-            }
+    public suspend fun tapBack() {
+        back += 1
+        backFlow.emit(back)
     }
-    fun tapBack() {
-        backFlow.transform {
-            emit(backFlow.value + 1)
+
+
+    public suspend  fun refresh() {
+        tap = 0
+        tapFlow.emit(0)
+        back = 0
+        backFlow.emit(0)
+        counter = 0
+        timer
+    }
+
+    public fun fetchTapFlow(): StateFlow<Int> {
+        return tapFlow
+    }
+
+    public fun fetchBackFlow(): StateFlow<Int> {
+        return backFlow
+    }
+
+    public val timer = flow {
+        counter = 0
+
+        emit(counter)
+        while (counter < 10_000) {
+            delay(1_000)
+            counter += 1
+            emit(counter)
         }
     }
-
-    fun refresh() {
-        tapFlow.transform {
-            emit(0)
-        }
-        backFlow.transform {
-            emit(0)
-        }
-        counterFlow.transform { emit(0) }
-    }
+        .cancellable()
 }

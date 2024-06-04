@@ -1,24 +1,41 @@
 package com.kkolontay.theworld.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkolontay.theworld.api.ApiBuilder
 import com.kkolontay.theworld.api.ApiInterface
 import com.kkolontay.theworld.api.WorldResponse
+import com.kkolontay.theworld.flow.Flows
 import com.kkolontay.theworld.model.Country
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 
 class CountryViewModel : ViewModel() {
     private val _uiState: MutableStateFlow<WorldResponse> = MutableStateFlow(WorldResponse.Loading())
     val uiState = _uiState.asStateFlow()
     private val apiService = ApiBuilder.apiService
+   private val _timerState: MutableStateFlow<Int> = MutableStateFlow(0)
+    val timerState = _timerState.asStateFlow()
+    private val _tap: MutableStateFlow<Int> = MutableStateFlow(0)
+    val tap = _tap.asStateFlow()
+    private val _back: MutableStateFlow<Int> = MutableStateFlow(0)
+    val back = _back.asStateFlow()
+    val flows = Flows
 
     init {
         viewModelScope.launch {
@@ -27,8 +44,31 @@ class CountryViewModel : ViewModel() {
             }
                 .collect {
                     _uiState.value = it
+                    flows.counter = 1_000_000
                 }
         }
+        viewModelScope.launch {
+
+            flows.fetchBackFlow().collect {
+                _back.value = it
+                println(it)
+            }
+
+        }
+        viewModelScope.launch {
+            flows.timer.collect {
+                _timerState.value = it
+                println(it)
+            }
+        }
+        viewModelScope.launch {
+
+            flows.fetchTapFlow().collect {
+                _tap.value = it
+                println(it)
+            }
+        }
+
     }
 
     private fun getCountryInfoFlow(): Flow<WorldResponse> {

@@ -15,14 +15,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.kkolontay.theworld.R
+import com.kkolontay.theworld.flow.Flows
 import com.kkolontay.theworld.model.Country
 import com.kkolontay.theworld.model.CountryFlags
 import com.kkolontay.theworld.model.CountryName
 
 @Composable
-fun CountryItemDetail(country: Country, navigateUP: () -> Unit, modifier: Modifier = Modifier) {
+fun CountryItemDetail(country: Country, taps: Int, back: Int, modifier: Modifier = Modifier) {
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        InfoView(taps = taps, refresh = {}, back = back)
         Row {
             Text(text = stringResource(R.string.capital1))
             Text(text = country.name.common.toString())
@@ -52,5 +54,5 @@ fun CountryItemDetailPreview() {
     val country = Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
         png = "some"
     ))
-    CountryItemDetail(country = country, navigateUP = {})
+    CountryItemDetail(country = country, taps = 0, back =1)
 }
