@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.sourceInformation
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
@@ -16,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kkolontay.theworld.R
+import com.kkolontay.theworld.R.string.name
 import com.kkolontay.theworld.model.Country
 import com.kkolontay.theworld.model.CountryFlags
 import com.kkolontay.theworld.model.CountryName
@@ -33,8 +33,8 @@ fun CountryItem(country: Country) {
        Column(modifier = Modifier
            .padding(16.dp)
        ) {
-            Row() {
-                Text(text = stringResource(R.string.name))
+            Row {
+                Text(text = stringResource(name))
                 Text(text = country.name.common)
             }
             Row(modifier = Modifier.padding(top = 8.dp)) {

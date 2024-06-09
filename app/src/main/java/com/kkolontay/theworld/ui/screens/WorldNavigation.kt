@@ -6,16 +6,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.kkolontay.theworld.R
 import com.kkolontay.theworld.model.Country
@@ -23,7 +20,7 @@ import com.kkolontay.theworld.model.CountryFlags
 import com.kkolontay.theworld.model.CountryName
 import com.kkolontay.theworld.viewmodel.CountryViewModel
 
-enum class AppScreens() {
+enum class AppScreens {
     ListCountry,
     CountryDetail
 }
@@ -34,15 +31,11 @@ fun WorldNavigation(
     navController: NavHostController = rememberNavController(),
     context: Context
 ) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = AppScreens.valueOf(
-        backStackEntry?.destination?.route ?: AppScreens.ListCountry.name
-    )
-    var title = rememberSaveable {
+    val title = rememberSaveable {
         mutableStateOf("List")
     }
-    var choosenCountry = remember {
-        mutableStateOf<Country>(Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(png = "some")))
+    val choosenCountry = remember {
+        mutableStateOf(Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(png = "some")))
     }
     Scaffold(
         topBar = {
@@ -70,9 +63,7 @@ fun WorldNavigation(
                 }
             }
             composable(AppScreens.CountryDetail.name) {
-                CountryItemDetail(country = choosenCountry.value, navigateUP = {
-                    navController.previousBackStackEntry
-                })
+                CountryItemDetail(country = choosenCountry.value)
             }
         }
     }

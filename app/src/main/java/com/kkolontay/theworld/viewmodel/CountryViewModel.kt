@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kkolontay.theworld.api.ApiBuilder
 import com.kkolontay.theworld.api.WorldResponse
-import com.kkolontay.theworld.model.Country
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +23,7 @@ class CountryViewModel : ViewModel() {
                 Log.i("Country", response.toString())
             } catch (e: Exception) {
                 Log.i("TAG", e.message.toString())
-                Log.i("TAG", e.localizedMessage.toString())
+                Log.i("TAG", e.localizedMessage?.toString() ?: "Error")
                 _uiState.value = WorldResponse.ErrorResponse()
             }
         }

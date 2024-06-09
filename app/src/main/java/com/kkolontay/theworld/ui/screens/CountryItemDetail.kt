@@ -20,12 +20,12 @@ import com.kkolontay.theworld.model.CountryFlags
 import com.kkolontay.theworld.model.CountryName
 
 @Composable
-fun CountryItemDetail(country: Country, navigateUP: () -> Unit, modifier: Modifier = Modifier) {
+fun CountryItemDetail(country: Country) {
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Row {
             Text(text = stringResource(R.string.capital1))
-            Text(text = country.name.common.toString())
+            Text(text = country.name.common)
         }
         Row {
             Text(text = stringResource(R.string.population))
@@ -52,5 +52,5 @@ fun CountryItemDetailPreview() {
     val country = Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
         png = "some"
     ))
-    CountryItemDetail(country = country, navigateUP = {})
+    CountryItemDetail(country = country)
 }

@@ -9,17 +9,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kkolontay.theworld.api.WorldResponse
 import com.kkolontay.theworld.model.Country
-import com.kkolontay.theworld.model.CountryFlags
-import com.kkolontay.theworld.model.CountryName
-import com.kkolontay.theworld.ui.theme.TheWorldTheme
 
 @Composable
 fun CountryList(countries: WorldResponse, nextScreen: (Country) -> Unit) {
