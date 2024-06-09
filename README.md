@@ -1,2 +1,2 @@
 # TheWorld
- Full list of county with characteristis
+ Full list of county with characteristics
