@@ -15,7 +15,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kkolontay.theworld.R
-import com.kkolontay.theworld.api.WorldResponse
 import com.kkolontay.theworld.model.Country
 import com.kkolontay.theworld.model.CountryFlags
 import com.kkolontay.theworld.model.CountryName
@@ -50,7 +49,7 @@ fun WorldNavigation(
             )
         }
     ) { innerPadding ->
-        var uiState = remember {viewModel.uiState}
+        val uiState = remember {viewModel.uiState}
         LaunchedEffect(Unit) {
             viewModel.fetchCountryList()
         }
