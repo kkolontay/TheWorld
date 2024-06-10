@@ -1,4 +1,4 @@
-package com.kkolontay.theworld.ui.screens
+package com.kkolontay.theworld.ui.screens.contrydetails
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +18,7 @@ import com.kkolontay.theworld.R
 import com.kkolontay.theworld.model.Country
 import com.kkolontay.theworld.model.CountryFlags
 import com.kkolontay.theworld.model.CountryName
+import com.kkolontay.theworld.ui.screens.countryinfo.InfoView
 
 @Composable
 fun CountryItemDetail(country: Country, taps: Int, back: Int, refresh: () -> Unit) {

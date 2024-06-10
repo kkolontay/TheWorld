@@ -1,4 +1,4 @@
-package com.kkolontay.theworld.ui.screens
+package com.kkolontay.theworld.ui.screens.countryinfo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun InfoView(modifier: Modifier = Modifier, taps: Int, refresh: () -> Unit, back: Int) {
+fun InfoView(modifier: Modifier = Modifier, taps: Int, back: Int, refresh: () -> Unit) {
     Row(modifier = modifier.fillMaxWidth()
         .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically ) {
         Row {

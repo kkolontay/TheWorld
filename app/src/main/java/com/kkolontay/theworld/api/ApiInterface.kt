@@ -9,9 +9,10 @@ interface ApiInterface {
         suspend fun getAllCountry(): Response<List<Country>>
 }
 
-sealed class WorldResponse {
-        class Success(val list: List<Country>): WorldResponse()
-        class Loading(): WorldResponse()
-        class Error(val description: String?): WorldResponse()
+
+sealed class CountryInfoState {
+        class Success(val list: List<Country>): CountryInfoState()
+        class Loading(): CountryInfoState()
+        class Error(val description: String?): CountryInfoState()
 
 }

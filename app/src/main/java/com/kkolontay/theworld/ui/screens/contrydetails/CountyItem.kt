@@ -1,4 +1,4 @@
-package com.kkolontay.theworld.ui.screens
+package com.kkolontay.theworld.ui.screens.contrydetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

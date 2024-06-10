@@ -9,4 +9,5 @@
     <string name="area">"Area: "</string>
     <string name="translated_description_of_what_the_image_contains">Translated description of what the image contains</string>
     <string name="generic_error">Generic Error</string>
+    <string name="update_list">Update List</string>
 </resources>

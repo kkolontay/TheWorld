@@ -20,6 +20,9 @@ import com.kkolontay.theworld.model.CountryName
 import com.kkolontay.theworld.viewmodel.CountryViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kkolontay.theworld.ui.screens.contrydetails.CountryItemDetail
+import com.kkolontay.theworld.ui.screens.countryinfo.CountryList
 
 enum class AppScreens {
     ListCountry,
@@ -28,7 +31,7 @@ enum class AppScreens {
 
 @Composable
 fun WorldNavigation(
-    viewModel: CountryViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: CountryViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
     context: Context
 ) {

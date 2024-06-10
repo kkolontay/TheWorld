@@ -3,8 +3,7 @@ package com.kkolontay.theworld.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kkolontay.theworld.api.ApiBuilder
-import com.kkolontay.theworld.api.WorldResponse
+import com.kkolontay.theworld.api.CountryInfoState
 import com.kkolontay.theworld.flow.Flows
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,9 +13,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class CountryViewModel : ViewModel() {
-    private val _uiState: MutableStateFlow<WorldResponse> = MutableStateFlow(WorldResponse.Loading())
+    private val _uiState: MutableStateFlow<CountryInfoState> = MutableStateFlow(CountryInfoState.Loading())
     val uiState = _uiState.asStateFlow()
-    private val apiService = ApiBuilder.apiService
+   // private val apiService = ApiBuilder.apiService
    private val _timerState: MutableStateFlow<Int> = MutableStateFlow(0)
     val timerState = _timerState.asStateFlow()
     private val _tap: MutableStateFlow<Int> = MutableStateFlow(0)
@@ -28,7 +27,7 @@ class CountryViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             getCountryInfoFlow().catch {
-                _uiState.value = WorldResponse.Error(it.localizedMessage)
+                _uiState.value = CountryInfoState.Error(it.localizedMessage)
             }
                 .collect {
                     _uiState.value = it
@@ -60,7 +59,7 @@ class CountryViewModel : ViewModel() {
     }
 
     fun refresh() {
-        _uiState.value = WorldResponse.Loading()
+        _uiState.value = CountryInfoState.Loading()
         flows.counter = 0
         viewModelScope.launch {
             flows.timer.collect {
@@ -70,7 +69,7 @@ class CountryViewModel : ViewModel() {
         }
         viewModelScope.launch {
             getCountryInfoFlow().catch {
-                _uiState.value = WorldResponse.Error(it.localizedMessage)
+                _uiState.value = CountryInfoState.Error(it.localizedMessage)
             }
                 .collect {
                     _uiState.value = it
@@ -79,14 +78,14 @@ class CountryViewModel : ViewModel() {
         }
     }
 
-    private fun getCountryInfoFlow(): Flow<WorldResponse> {
-      return  flow {
-            val response = apiService.getAllCountry()
-          if (response.isSuccessful) {
-              emit(WorldResponse.Success(response.body() ?: listOf()))
-          } else {
-              emit(WorldResponse.Error(response.errorBody().toString()))
-          }
-        }
-    }
+//    private fun getCountryInfoFlow(): Flow<CountryInfoState> {
+//      return  flow {
+//            val response = apiService.getAllCountry()
+//          if (response.isSuccessful) {
+//              emit(CountryInfoState.Success(response.body() ?: listOf()))
+//          } else {
+//              emit(CountryInfoState.Error(response.errorBody().toString()))
+//          }
+//        }
+//    }
 }

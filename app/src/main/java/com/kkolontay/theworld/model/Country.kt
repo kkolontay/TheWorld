@@ -5,11 +5,13 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CountryName(
-    val common: String)
+    val common: String
+)
 
 @JsonClass(generateAdapter = true)
 data class CountryFlags(
-    val png: String)
+    val png: String
+)
 
 @JsonClass(generateAdapter = true)
 data class Country(
@@ -17,6 +19,7 @@ data class Country(
     val capital: List<String>?,
     val population: Long,
     val area: Double,
-    val flags: CountryFlags)
+    val flags: CountryFlags
+)
 
 
