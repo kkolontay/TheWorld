@@ -5,24 +5,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flow
 
-public object Flows {
+object Flows {
     private var tapFlow = MutableStateFlow(0)
     private var backFlow = MutableStateFlow(0)
     var counter = 0
-    var tap = 0
-    var back = 0
+    private var tap = 0
+    private var back = 0
 
-    public suspend fun tap() {
+    suspend fun tap() {
         tap += 1
         tapFlow.emit(tap)
     }
-    public suspend fun tapBack() {
+    suspend fun tapBack() {
         back += 1
         backFlow.emit(back)
     }
 
 
-    public suspend  fun refresh() {
+    suspend  fun refresh() {
         tap = 0
         tapFlow.emit(0)
         back = 0
@@ -31,15 +31,15 @@ public object Flows {
         timer
     }
 
-    public fun fetchTapFlow(): StateFlow<Int> {
+    fun fetchTapFlow(): StateFlow<Int> {
         return tapFlow
     }
 
-    public fun fetchBackFlow(): StateFlow<Int> {
+    fun fetchBackFlow(): StateFlow<Int> {
         return backFlow
     }
 
-    public val timer = flow {
+    val timer = flow {
         counter = 0
 
         emit(counter)

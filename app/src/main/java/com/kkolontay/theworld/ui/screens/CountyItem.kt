@@ -32,7 +32,7 @@ fun CountryItem(country: Country) {
        Column(modifier = Modifier
            .padding(16.dp)
        ) {
-            Row() {
+            Row {
                 Text(text = stringResource(R.string.name))
                 Text(text = country.name.common)
             }

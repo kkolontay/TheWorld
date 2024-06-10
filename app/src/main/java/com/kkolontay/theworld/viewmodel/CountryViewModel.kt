@@ -28,7 +28,7 @@ class CountryViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             getCountryInfoFlow().catch {
-                _uiState.value = WorldResponse.ErrorResponse()
+                _uiState.value = WorldResponse.Error(it.localizedMessage)
             }
                 .collect {
                     _uiState.value = it
@@ -70,7 +70,7 @@ class CountryViewModel : ViewModel() {
         }
         viewModelScope.launch {
             getCountryInfoFlow().catch {
-                _uiState.value = WorldResponse.ErrorResponse()
+                _uiState.value = WorldResponse.Error(it.localizedMessage)
             }
                 .collect {
                     _uiState.value = it
@@ -80,9 +80,13 @@ class CountryViewModel : ViewModel() {
     }
 
     private fun getCountryInfoFlow(): Flow<WorldResponse> {
-      return  flow<WorldResponse> {
-            var response = apiService.fetchCountryList()
-            emit(WorldResponse.Success(response))
+      return  flow {
+            val response = apiService.getAllCountry()
+          if (response.isSuccessful) {
+              emit(WorldResponse.Success(response.body() ?: listOf()))
+          } else {
+              emit(WorldResponse.Error(response.errorBody().toString()))
+          }
         }
     }
 }
