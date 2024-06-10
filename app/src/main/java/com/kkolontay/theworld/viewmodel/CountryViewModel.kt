@@ -11,20 +11,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class CountryViewModel : ViewModel() {
-    private val _uiState: MutableStateFlow<WorldResponse> = MutableStateFlow(WorldResponse.Loading())
+    private val _uiState: MutableStateFlow<WorldResponse> = MutableStateFlow(WorldResponse.Loading)
     val uiState = _uiState.asStateFlow()
     private val apiService = ApiBuilder.apiService
 
     fun fetchCountryList() {
+        _uiState.value = WorldResponse.Loading
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val response = apiService.fetchCountryList()
-                _uiState.value = WorldResponse.Success(response)
+                val response = apiService.getAllCountries()
+                if (response.isSuccessful) {
+                    _uiState.value = WorldResponse.Success(response.body() ?: listOf())
+                } else {
+                    _uiState.value = WorldResponse.Error
+                }
                 Log.i("Country", response.toString())
             } catch (e: Exception) {
                 Log.i("TAG", e.message.toString())
                 Log.i("TAG", e.localizedMessage?.toString() ?: "Error")
-                _uiState.value = WorldResponse.ErrorResponse()
+                _uiState.value = WorldResponse.Error
             }
         }
     }

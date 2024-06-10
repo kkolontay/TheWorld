@@ -8,4 +8,5 @@
     <string name="population">"Population: "</string>
     <string name="area">"Area: "</string>
     <string name="translated_description_of_what_the_image_contains">Translated description of what the image contains</string>
+    <string name="reload_content">Reload content</string>
 </resources>
