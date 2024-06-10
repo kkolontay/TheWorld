@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
+    implementation("com.squareup.moshi:moshi:1.15.1")
     implementation(libs.imageLoader)
     implementation(libs.retrofitConvertor)
     implementation(libs.composeViewmodel)

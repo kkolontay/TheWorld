@@ -4,4 +4,8 @@
     <string name="name">"Name: "</string>
     <string name="capital">"Capital: "</string>
     <string name="list1">List</string>
+    <string name="capital1">"Capital: "</string>
+    <string name="population">"Population: "</string>
+    <string name="area">"Area: "</string>
+    <string name="translated_description_of_what_the_image_contains">Translated description of what the image contains</string>
 </resources>

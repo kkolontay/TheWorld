@@ -1,19 +1,22 @@
 package com.kkolontay.theworld.model
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CountryName(
-     val common: String)
+    @Json(name = "common") val common: String)
 
 @JsonClass(generateAdapter = true)
 data class CountryFlags(
-     val png: String)
+    @Json(name = "png") val png: String)
 
 @JsonClass(generateAdapter = true)
 data class Country(
-     val name: CountryName,
-    val capital: List<String>?,
-    val population: Long,
-     val area: Double,
-     val flags: CountryFlags)
+    @Json(name = "name") val name: CountryName,
+    @Json(name = "capital") val capital: List<String>?,
+    @Json(name = "population") val population: Long,
+    @Json(name = "area") val area: Double,
+    @Json(name = "flags") val flags: CountryFlags)
+
+
