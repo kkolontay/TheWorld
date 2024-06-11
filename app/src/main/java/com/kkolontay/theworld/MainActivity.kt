@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kkolontay.theworld.repository.CountryRepositoryImplementation
 import com.kkolontay.theworld.ui.screens.WorldNavigation
+import com.kkolontay.theworld.ui.screens.countryinfo.CountryInfoViewModel
 import com.kkolontay.theworld.ui.theme.TheWorldTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +23,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   WorldNavigation(context = baseContext)
+                   WorldNavigation(composableViewModel = viewModel(factory =  CountryInfoViewModel.provideFactory(
+                       CountryRepositoryImplementation(), this)), context = baseContext)
                 }
             }
         }

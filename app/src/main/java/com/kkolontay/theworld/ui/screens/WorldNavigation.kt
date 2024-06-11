@@ -21,7 +21,9 @@ import com.kkolontay.theworld.viewmodel.CountryViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kkolontay.theworld.repository.CountryRepositoryImplementation
 import com.kkolontay.theworld.ui.screens.contrydetails.CountryItemDetail
+import com.kkolontay.theworld.ui.screens.countryinfo.CountryInfoViewModel
 import com.kkolontay.theworld.ui.screens.countryinfo.CountryList
 
 enum class AppScreens {
@@ -32,6 +34,7 @@ enum class AppScreens {
 @Composable
 fun WorldNavigation(
     viewModel: CountryViewModel = viewModel(),
+    composableViewModel: CountryInfoViewModel,
     navController: NavHostController = rememberNavController(),
     context: Context
 ) {
@@ -57,14 +60,14 @@ fun WorldNavigation(
             )
         }
     ) { innerPadding ->
-        val uiState = remember {viewModel.uiState}
+      //  val uiState = remember {viewModel.uiState}
         val timerState = viewModel.timerState.collectAsState()
         val  tap = viewModel.tap.collectAsState()
         val back = viewModel.back.collectAsState()
 
         NavHost(navController = navController, startDestination = AppScreens.ListCountry.name, modifier = Modifier.padding(innerPadding)) {
             composable(AppScreens.ListCountry.name) {
-                CountryList(countries = uiState.collectAsState().value, timer = timerState.value, taps = tap.value, back = back.value, refresh = {
+                CountryList(viewModel = composableViewModel, timer = timerState.value, taps = tap.value, back = back.value, refresh = {
                    MainScope().launch {
                        viewModel.flows.refresh()
                        viewModel.refresh()

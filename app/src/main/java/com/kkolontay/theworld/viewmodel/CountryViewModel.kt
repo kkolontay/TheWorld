@@ -25,15 +25,15 @@ class CountryViewModel : ViewModel() {
     val flows = Flows
 
     init {
-        viewModelScope.launch {
-            getCountryInfoFlow().catch {
-                _uiState.value = CountryInfoState.Error(it.localizedMessage)
-            }
-                .collect {
-                    _uiState.value = it
-                    flows.counter = 1_000_000
-                }
-        }
+//        viewModelScope.launch {
+//            getCountryInfoFlow().catch {
+//                _uiState.value = CountryInfoState.Error(it.localizedMessage)
+//            }
+//                .collect {
+//                    _uiState.value = it
+//                    flows.counter = 1_000_000
+//                }
+//        }
         viewModelScope.launch {
 
             flows.fetchBackFlow().collect {
@@ -68,13 +68,13 @@ class CountryViewModel : ViewModel() {
             }
         }
         viewModelScope.launch {
-            getCountryInfoFlow().catch {
-                _uiState.value = CountryInfoState.Error(it.localizedMessage)
-            }
-                .collect {
-                    _uiState.value = it
-                    flows.counter = 1_000_000
-                }
+//            getCountryInfoFlow().catch {
+//                _uiState.value = CountryInfoState.Error(it.localizedMessage)
+//            }
+//                .collect {
+//                    _uiState.value = it
+//                    flows.counter = 1_000_000
+//                }
         }
     }
 

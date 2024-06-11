@@ -3,19 +3,16 @@ import com.kkolontay.theworld.api.ApiBuilder
 import com.kkolontay.theworld.api.CountryInfoState
 import com.kkolontay.theworld.model.Country
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
+import java.lang.Exception
 
 class CountryRepositoryImplementation: CountryRepository {
 
     private var countries: List<Country> = listOf()
     private val apiService = ApiBuilder.apiService
-    private var collector: FlowCollector<CountryInfoState>? = null
-
-    override suspend fun fetchCountries(): Flow<CountryInfoState> {
-        return flow {
-            collector = this
-            emit(CountryInfoState.Loading())
+    private var collector = flow {
+        emit(CountryInfoState.Loading())
+        try {
             val response = apiService.getAllCountry()
             if (response.isSuccessful) {
                 countries = response.body() ?: listOf()
@@ -23,21 +20,15 @@ class CountryRepositoryImplementation: CountryRepository {
             } else {
                 emit(CountryInfoState.Error(response.errorBody().toString()))
             }
+        } catch (e: Exception) {
+            emit(CountryInfoState.Error(e.localizedMessage))
         }
     }
 
-    override suspend fun updateListCountries() {
-        if (collector != null) {
-            collector!!.emit(CountryInfoState.Loading())
-            val response = apiService.getAllCountry()
-            if (response.isSuccessful) {
-                countries = response.body() ?: listOf()
-                collector!!.emit(CountryInfoState.Success(countries))
-            } else {
-                collector!!.emit(CountryInfoState.Error(response.errorBody().toString()))
-            }
-        }
+    override suspend fun fetchCountries(): Flow<CountryInfoState> {
+        return collector
     }
+
 
     override fun getCountry(name: String): Country {
         return countries.first {

@@ -1,7 +1,11 @@
 package com.kkolontay.theworld.ui.screens.countryinfo
 
+import android.os.Bundle
+import androidx.lifecycle.AbstractSavedStateViewModelFactory
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.savedstate.SavedStateRegistryOwner
 import com.kkolontay.theworld.api.CountryInfoState
 import com.kkolontay.theworld.repository.CountryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,9 +24,27 @@ class CountryInfoViewModel(val repository: CountryRepository): ViewModel() {
         }
     }
 
+    companion object {
+        fun provideFactory(repository: CountryRepository,
+                           owner: SavedStateRegistryOwner,
+                           defaultArgs: Bundle? = null): AbstractSavedStateViewModelFactory = object: AbstractSavedStateViewModelFactory(owner, defaultArgs) {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(
+                key: String,
+                modelClass: Class<T>,
+                handle: SavedStateHandle
+            ): T {
+                return CountryInfoViewModel(repository) as T
+            }
+        }
+
+    }
+
     fun updateCountryList() {
         viewModelScope.launch {
-            repository.updateListCountries()
+            repository.fetchCountries().collect {
+                _uiState.value = it
+            }
         }
     }
 }
