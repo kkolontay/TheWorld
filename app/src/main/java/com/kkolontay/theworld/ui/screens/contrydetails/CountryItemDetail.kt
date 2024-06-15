@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -21,10 +22,9 @@ import com.kkolontay.theworld.model.CountryName
 import com.kkolontay.theworld.ui.screens.countryinfo.InfoView
 
 @Composable
-fun CountryItemDetail(country: Country, taps: Int, back: Int, refresh: () -> Unit) {
+fun CountryItemDetail(country: Country, refresh: () -> Unit) {
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        InfoView(taps = taps, refresh = refresh, back = back)
         Row {
             Text(text = stringResource(R.string.capital1))
             Text(text = country.name.common)
@@ -41,8 +41,7 @@ fun CountryItemDetail(country: Country, taps: Int, back: Int, refresh: () -> Uni
             model = country.flags.png,
             contentDescription = stringResource(R.string.translated_description_of_what_the_image_contains),
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(0.5f)
+                .padding(vertical = 16.dp)
                 .clip(RoundedCornerShape(5.dp))
         )
     }
@@ -54,5 +53,5 @@ fun CountryItemDetailPreview() {
     val country = Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
         png = "some"
     ))
-    CountryItemDetail(country = country, taps = 0, back = 1, refresh = {})
+    CountryItemDetail(country = country, refresh = {})
 }

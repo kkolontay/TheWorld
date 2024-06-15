@@ -11,21 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun InfoView(modifier: Modifier = Modifier, taps: Int, back: Int, refresh: () -> Unit) {
+fun InfoView(modifier: Modifier = Modifier, refresh: () -> Unit) {
     Row(modifier = modifier.fillMaxWidth()
-        .padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically ) {
-        Row {
-            Text("Taps: ")
-            Text("$taps", modifier = modifier.padding(start = 8.dp))
+        .padding(16.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically ) {
 
-        }
         Button(onClick = { refresh() }) {
             Text(text = "Refresh")
-        }
-        Row {
-            Text("Back: ")
-            Text("$back", modifier = Modifier.padding(start = 8.dp))
-
         }
     }
 }

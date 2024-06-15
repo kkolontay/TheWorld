@@ -54,12 +54,11 @@ fun WorldNavigation(
     ) { innerPadding ->
 
         val timerState = viewModel.timerState.collectAsState()
-        val  tap = viewModel.tap.collectAsState()
-        val back = viewModel.back.collectAsState()
+
 
         NavHost(navController = navController, startDestination = AppScreens.ListCountry.name, modifier = Modifier.padding(innerPadding)) {
             composable(AppScreens.ListCountry.name) {
-                CountryList(viewModel = composableViewModel, timer = timerState.value, taps = tap.value, back = back.value, refresh = {
+                CountryList(viewModel = composableViewModel, timer = timerState.value, refresh = {
                    MainScope().launch {
                        viewModel.flows.refresh()
                        viewModel.refresh()
@@ -78,13 +77,7 @@ fun WorldNavigation(
                    val country = composableViewModel.fetchCountry(countryName)
                    CountryItemDetail(
                        country = country,
-                       taps = tap.value,
-                       back = back.value,
                        refresh = {
-                           MainScope().launch {
-                               viewModel.flows.refresh()
-                               viewModel.refresh()
-                           }
                            navController.navigateUp()
                        })
             }

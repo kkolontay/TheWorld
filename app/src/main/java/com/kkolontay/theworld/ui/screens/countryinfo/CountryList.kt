@@ -23,13 +23,13 @@ import com.kkolontay.theworld.ui.screens.contrydetails.CountryItem
 
 
 @Composable
-fun CountryList(viewModel: CountryInfoViewModel, timer: Int, taps: Int, back: Int, refresh: () -> Unit, nextScreen: (Country) -> Unit) {
+fun CountryList(viewModel: CountryInfoViewModel, timer: Int, refresh: () -> Unit, nextScreen: (Country) -> Unit) {
     val state by viewModel.uiState.collectAsState()
     when (state) {
         is CountryInfoState.Success -> {
 
             Column {
-                InfoView(taps = taps, refresh = refresh, back = back)
+                InfoView( refresh = refresh)
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(16.dp)
