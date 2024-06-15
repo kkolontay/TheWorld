@@ -12,7 +12,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.kkolontay.theworld.R
 import com.kkolontay.theworld.viewmodel.CountryViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
