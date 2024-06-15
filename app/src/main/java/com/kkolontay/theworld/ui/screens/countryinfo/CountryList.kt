@@ -29,7 +29,10 @@ fun CountryList(viewModel: CountryInfoViewModel, timer: Int, refresh: () -> Unit
         is CountryInfoState.Success -> {
 
             Column {
-                InfoView( refresh = refresh)
+                InfoView( refresh = {
+                    viewModel.updateCountryList()
+                    refresh()
+                })
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(16.dp)
