@@ -43,10 +43,7 @@ fun WorldNavigation(
                 title = title.value,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = {
-                    title.value = context.getString(R.string.list1)
-                    MainScope().launch {
-                        viewModel.flows.tapBack()
-                    }
+                    title.value = ""
                     navController.navigateUp()
                 }
             )
@@ -64,9 +61,6 @@ fun WorldNavigation(
                        viewModel.refresh()
                    }
                 }) {
-                    MainScope().launch {
-                        viewModel.flows.tap()
-                    }
                     title.value = it.name.common
                     navController.navigate("detail/${it.name.common}")
                 }
