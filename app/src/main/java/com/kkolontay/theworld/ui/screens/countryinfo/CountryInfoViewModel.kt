@@ -1,6 +1,7 @@
 package com.kkolontay.theworld.ui.screens.countryinfo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -40,12 +41,19 @@ class CountryInfoViewModel(private val repository: CountryRepository): ViewModel
         }
     }
 
-   fun fetchCountry(name: String): Country {
-       return repository.getCountry(name)
+    fun fetchCountry(name: String): Country {
+        return repository.getCountry(name)
     }
+
     fun updateCountryList() {
+        Log.i("Currentthread", Thread.currentThread().name)
+
+        _uiState.value = CountryInfoState.Loading()
+
         viewModelScope.launch {
+            Log.i("Currentthread", Thread.currentThread().name)
             repository.fetchCountries().collect {
+                Log.i("Currentthread", Thread.currentThread().name)
                 _uiState.value = it
             }
         }

@@ -15,7 +15,7 @@ fun InfoView(modifier: Modifier = Modifier, refresh: () -> Unit) {
     Row(modifier = modifier.fillMaxWidth()
         .padding(16.dp), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically ) {
 
-        Button(onClick = { refresh() }) {
+        Button(onClick = refresh) {
             Text(text = "Refresh")
         }
     }

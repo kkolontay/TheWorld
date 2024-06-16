@@ -20,6 +20,8 @@ import com.kkolontay.theworld.R
 import com.kkolontay.theworld.api.CountryInfoState
 import com.kkolontay.theworld.model.Country
 import com.kkolontay.theworld.ui.screens.contrydetails.CountryItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 @Composable
@@ -29,16 +31,15 @@ fun CountryList(viewModel: CountryInfoViewModel, timer: Int, refresh: () -> Unit
         is CountryInfoState.Success -> {
 
             Column {
-                InfoView( refresh = {
-                    viewModel.updateCountryList()
+                InfoView(  refresh = {
                     refresh()
                 })
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(16.dp)
                 ) {
-
-                    items((state as CountryInfoState.Success).list) { country ->
+                    val countries: List<Country> = ((state as? CountryInfoState.Success)?.list) ?: listOf()
+                    items(countries) { country ->
                         Box(modifier = Modifier.clickable { nextScreen(country) }) {
                             CountryItem(country = country)
                         }
@@ -55,6 +56,7 @@ fun CountryList(viewModel: CountryInfoViewModel, timer: Int, refresh: () -> Unit
             Column {
                 Text(text = "Error", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                 Button(onClick = {
+
                     viewModel.updateCountryList()
                 }, modifier = Modifier.fillMaxWidth().padding(24.dp)) {
                     Text(text = stringResource(R.string.update_list))

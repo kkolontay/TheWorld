@@ -16,6 +16,7 @@ import com.kkolontay.theworld.viewmodel.CountryViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kkolontay.theworld.api.CountryInfoState
 import com.kkolontay.theworld.ui.screens.contrydetails.CountryItemDetail
 import com.kkolontay.theworld.ui.screens.countryinfo.CountryInfoViewModel
 import com.kkolontay.theworld.ui.screens.countryinfo.CountryList
@@ -51,18 +52,19 @@ fun WorldNavigation(
 
         val timerState = viewModel.timerState.collectAsState()
 
-
         NavHost(navController = navController, startDestination = AppScreens.ListCountry.name, modifier = Modifier.padding(innerPadding)) {
             composable(AppScreens.ListCountry.name) {
                 CountryList(viewModel = composableViewModel, timer = timerState.value, refresh = {
                    MainScope().launch {
                        viewModel.flows.refresh()
                        viewModel.refresh()
+                       composableViewModel.updateCountryList()
                    }
                 }) {
                     title.value = it.name.common
                     navController.navigate("detail/${it.name.common}")
                 }
+
             }
             composable(route = "detail/{country}") {
                 val countryName = it.arguments?.getString("country") ?: error("Country is required")
