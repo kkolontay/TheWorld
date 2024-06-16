@@ -4,94 +4,83 @@ import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.kkolontay.theworld.viewmodel.CountryViewModel
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kkolontay.theworld.R
-import com.kkolontay.theworld.model.Country
-import com.kkolontay.theworld.model.CountryFlags
-import com.kkolontay.theworld.model.CountryName
+import com.kkolontay.theworld.ui.screens.contrydetails.CountryItemDetail
+import com.kkolontay.theworld.ui.screens.countryinfo.CountryInfoViewModel
+import com.kkolontay.theworld.ui.screens.countryinfo.CountryList
+import com.kkolontay.theworld.ui.screens.info.InfoScreen
 
-enum class AppScreens() {
+enum class AppScreens {
     ListCountry,
-    CountryDetail
+    InfoScreen
 }
 
 @Composable
 fun WorldNavigation(
-   // viewModel: OrderViewModel = viewModel(),
+    viewModel: CountryViewModel = viewModel(),
+    composableViewModel: CountryInfoViewModel,
     navController: NavHostController = rememberNavController(),
     context: Context
 ) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = AppScreens.valueOf(
-        backStackEntry?.destination?.route ?: AppScreens.ListCountry.name
-    )
-    var title = rememberSaveable {
-        mutableStateOf("List")
+
+    val title = rememberSaveable {
+        mutableStateOf(context.getString(R.string.country_info))
     }
-//    var choosenCountry by remember {
-//        mutableStateOf<Country>(Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-//            png = "some"
-//        )))
-//    }
+
     Scaffold(
         topBar = {
             AppBar(
                 title = title.value,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = {
-                    title.value = context.getString(R.string.list1)
+                    title.value = context.getString(R.string.country_info)
                     navController.navigateUp()
                 }
-            )
+            ) {
+                navController.navigate(AppScreens.InfoScreen.name)
+            }
         }
     ) { innerPadding ->
-        val countries = remember {
-            listOf(
-            Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-        )
-            ),
-            Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-        )
-            ), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-        )
-            ), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-        )
-            ), Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-            png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-        )
-            )
-        )
-        }
 
-        //val uiState by viewModel.uiState.collectAsState()
+        val timerState = viewModel.timerState.collectAsState()
+
         NavHost(navController = navController, startDestination = AppScreens.ListCountry.name, modifier = Modifier.padding(innerPadding)) {
             composable(AppScreens.ListCountry.name) {
-                CountryList(countries = countries) {
-                   // choosenCountry.value = it
+                CountryList(viewModel = composableViewModel, timer = timerState.value, refresh = {
+                   MainScope().launch {
+                       viewModel.flows.refresh()
+                       viewModel.refresh()
+                       composableViewModel.updateCountryList()
+                   }
+                }) {
                     title.value = it.name.common
-                    navController.navigate(AppScreens.CountryDetail.name)
+                    navController.navigate("detail/${it.name.common}")
                 }
+
             }
-            composable(AppScreens.CountryDetail.name) {
-                CountryItemDetail(country = Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
-       png = "https://mainfacts.com/media/images/coats_of_arms/md.png"
-      )), navigateUP = {
-                    navController.previousBackStackEntry
-                })
+            composable(AppScreens.InfoScreen.name) {
+                title.value = stringResource(R.string.application_info)
+                InfoScreen()
+            }
+            composable(route = "detail/{country}") {
+                val countryName = it.arguments?.getString("country") ?: error("Country is required")
+
+                   val country = composableViewModel.fetchCountry(countryName)
+                   CountryItemDetail(
+                       country = country)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.kkolontay.theworld.ui.screens
+package com.kkolontay.theworld.ui.screens.contrydetails
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.sourceInformation
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
@@ -33,7 +32,7 @@ fun CountryItem(country: Country) {
        Column(modifier = Modifier
            .padding(16.dp)
        ) {
-            Row() {
+            Row {
                 Text(text = stringResource(R.string.name))
                 Text(text = country.name.common)
             }
