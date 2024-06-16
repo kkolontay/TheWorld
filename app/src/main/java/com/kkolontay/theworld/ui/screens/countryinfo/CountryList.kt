@@ -20,8 +20,7 @@ import com.kkolontay.theworld.R
 import com.kkolontay.theworld.api.CountryInfoState
 import com.kkolontay.theworld.model.Country
 import com.kkolontay.theworld.ui.screens.contrydetails.CountryItem
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+
 
 
 @Composable

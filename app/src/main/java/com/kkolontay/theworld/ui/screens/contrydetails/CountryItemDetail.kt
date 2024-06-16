@@ -2,13 +2,10 @@ package com.kkolontay.theworld.ui.screens.contrydetails
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -19,10 +16,9 @@ import com.kkolontay.theworld.R
 import com.kkolontay.theworld.model.Country
 import com.kkolontay.theworld.model.CountryFlags
 import com.kkolontay.theworld.model.CountryName
-import com.kkolontay.theworld.ui.screens.countryinfo.InfoView
 
 @Composable
-fun CountryItemDetail(country: Country, refresh: () -> Unit) {
+fun CountryItemDetail(country: Country) {
 
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         Row {
@@ -53,5 +49,5 @@ fun CountryItemDetailPreview() {
     val country = Country(name = CountryName(common = "some"), capital = listOf("other"), population = 34, area = 45.0, flags = CountryFlags(
         png = "some"
     ))
-    CountryItemDetail(country = country, refresh = {})
+    CountryItemDetail(country = country)
 }

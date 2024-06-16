@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,13 +17,15 @@ import com.kkolontay.theworld.viewmodel.CountryViewModel
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.kkolontay.theworld.api.CountryInfoState
+import com.kkolontay.theworld.R
 import com.kkolontay.theworld.ui.screens.contrydetails.CountryItemDetail
 import com.kkolontay.theworld.ui.screens.countryinfo.CountryInfoViewModel
 import com.kkolontay.theworld.ui.screens.countryinfo.CountryList
+import com.kkolontay.theworld.ui.screens.info.InfoScreen
 
 enum class AppScreens {
-    ListCountry
+    ListCountry,
+    InfoScreen
 }
 
 @Composable
@@ -34,7 +37,7 @@ fun WorldNavigation(
 ) {
 
     val title = rememberSaveable {
-        mutableStateOf("")
+        mutableStateOf(context.getString(R.string.country_info))
     }
 
     Scaffold(
@@ -43,10 +46,12 @@ fun WorldNavigation(
                 title = title.value,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = {
-                    title.value = ""
+                    title.value = context.getString(R.string.country_info)
                     navController.navigateUp()
                 }
-            )
+            ) {
+                navController.navigate(AppScreens.InfoScreen.name)
+            }
         }
     ) { innerPadding ->
 
@@ -66,15 +71,16 @@ fun WorldNavigation(
                 }
 
             }
+            composable(AppScreens.InfoScreen.name) {
+                title.value = stringResource(R.string.application_info)
+                InfoScreen()
+            }
             composable(route = "detail/{country}") {
                 val countryName = it.arguments?.getString("country") ?: error("Country is required")
 
                    val country = composableViewModel.fetchCountry(countryName)
                    CountryItemDetail(
-                       country = country,
-                       refresh = {
-                           navController.navigateUp()
-                       })
+                       country = country)
             }
         }
     }
