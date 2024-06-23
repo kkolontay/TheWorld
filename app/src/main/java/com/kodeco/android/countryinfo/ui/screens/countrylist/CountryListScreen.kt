@@ -64,7 +64,9 @@ fun CountryListScreen(
                     countries = countryListState.countries,
                     onRefreshTap = viewModel::fetchCountries,
                     onCountryRowTap = onCountryRowTap,
-                    // TODO - OPTIONAL: wire up favorite listener
+                    favoriteTap = {
+                        viewModel.favorite(it)
+                    }
                 )
 
                 is CountryListState.Error -> Error(
