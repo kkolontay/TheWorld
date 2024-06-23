@@ -44,8 +44,8 @@ fun CountryInfoRow(
     val size = transition.animateDp(label = "Some feature", transitionSpec = {
         keyframes {
             durationMillis = 1000
-            10.dp at 500
-            30.dp at 900
+            65.dp at 500
+            50.dp at 900
             40.dp at 100
         }
     }) { state ->
@@ -54,6 +54,7 @@ fun CountryInfoRow(
             Favorite.Regular -> 40.dp
         }
     }
+
     Card(
         onClick = onTap,
         modifier = Modifier
