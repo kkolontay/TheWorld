@@ -1,5 +1,6 @@
 package com.kodeco.android.countryinfo.ui.components
-
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,14 +27,33 @@ import com.kodeco.android.countryinfo.R
 import com.kodeco.android.countryinfo.models.Country
 import com.kodeco.android.countryinfo.sample.sampleCountry
 
-
+enum class Favorite {
+    IsFavorite,
+    Regular
+}
 @Composable
 fun CountryInfoRow(
     country: Country,
     onTap: () -> Unit,
     favoriteTap: (Country) -> Unit
 ) {
-    val transition = updateTransition(country.isFavorite, label = "selected state")
+    val isFavorite = remember {
+        mutableStateOf(Favorite.Regular)
+    }
+    val transition = updateTransition(isFavorite.value, label = "favorite country")
+    val size = transition.animateDp(label = "Some feature", transitionSpec = {
+        keyframes {
+            durationMillis = 1000
+            10.dp at 500
+            30.dp at 900
+            40.dp at 100
+        }
+    }) { state ->
+        when(state) {
+            Favorite.IsFavorite -> 40.dp
+            Favorite.Regular -> 40.dp
+        }
+    }
     Card(
         onClick = onTap,
         modifier = Modifier
@@ -49,16 +71,23 @@ fun CountryInfoRow(
             }
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(255,255,255, 0), contentColor = Color.White),
-                onClick = { favoriteTap(country) }) {
+                onClick = {
+                    isFavorite.value = if(country.isFavorite) {
+                        Favorite.Regular
+                    } else {
+                        Favorite.IsFavorite
+                    }
+                    favoriteTap(country)
+                }) {
                 Image(
                     painter = if (country.isFavorite) {
-                        painterResource(R.drawable.star_filled)
+                        painterResource(R.drawable.star)
                     } else {
                         painterResource(R.drawable.star_outline)
                     },
                     contentDescription = "Description for accessibility",
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.size(40.dp, 40.dp)
+                    modifier = Modifier.size(size.value, size.value)
                 )
             }
         }
