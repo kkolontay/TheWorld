@@ -1,6 +1,9 @@
 package com.kodeco.android.countryinfo.ui.components
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -26,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.kodeco.android.countryinfo.R
 import com.kodeco.android.countryinfo.models.Country
 import com.kodeco.android.countryinfo.sample.sampleCountry
+import kotlinx.coroutines.launch
 
 enum class Favorite {
     IsFavorite,
@@ -40,6 +46,8 @@ fun CountryInfoRow(
     val isFavorite = remember {
         mutableStateOf(Favorite.Regular)
     }
+    val rotation = remember { Animatable(0f) }
+    val scope = rememberCoroutineScope()
     val transition = updateTransition(isFavorite.value, label = "favorite country")
     val size = transition.animateDp(label = "Some feature", transitionSpec = {
         keyframes {
@@ -73,6 +81,14 @@ fun CountryInfoRow(
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(255,255,255, 0), contentColor = Color.White),
                 onClick = {
+                    scope.launch {
+                        rotation.animateTo(
+                            targetValue = 380f,
+                            animationSpec = tween(1000, easing = LinearEasing)
+                        )
+
+                        rotation.snapTo(0f)
+                    }
                     isFavorite.value = if(country.isFavorite) {
                         Favorite.Regular
                     } else {
@@ -88,7 +104,9 @@ fun CountryInfoRow(
                     },
                     contentDescription = "Description for accessibility",
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.size(size.value, size.value)
+                    modifier = Modifier
+                        .size(size.value, size.value)
+                        .rotate(rotation.value)
                 )
             }
         }
