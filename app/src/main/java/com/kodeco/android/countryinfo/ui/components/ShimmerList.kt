@@ -53,7 +53,7 @@ fun ShimmerListItem(modifier: Modifier = Modifier) {
 @Composable
 fun ShimmerList() {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        item(20) {
+        items(20) {
             ShimmerListItem(modifier = Modifier.padding(16.dp))
         }
     }

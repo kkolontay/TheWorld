@@ -24,7 +24,7 @@ import com.kodeco.android.countryinfo.sample.sampleCountries
 import com.kodeco.android.countryinfo.sample.sampleCountry
 import com.kodeco.android.countryinfo.ui.components.CountryInfoList
 import com.kodeco.android.countryinfo.ui.components.Error
-import com.kodeco.android.countryinfo.ui.components.Loading
+import com.kodeco.android.countryinfo.ui.components.ShimmerList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -59,7 +59,7 @@ fun CountryListScreen(
             .fillMaxSize()
             .padding(padding)) {
             when (val countryListState = state) {
-                is CountryListState.Loading -> Loading()
+                is CountryListState.Loading -> ShimmerList()
                 is CountryListState.Success -> CountryInfoList(
                     countries = countryListState.countries,
                     onRefreshTap = viewModel::fetchCountries,
