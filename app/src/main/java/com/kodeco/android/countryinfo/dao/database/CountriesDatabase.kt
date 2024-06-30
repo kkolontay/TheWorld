@@ -24,4 +24,6 @@ abstract class CountriesDatabase: RoomDatabase() {
                 .build()
         }
     }
+
+    abstract fun countiesDAO(): CountriesDAO
 }

@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.kodeco.android.countryinfo.dao.database.CountriesDatabase
+import com.kodeco.android.countryinfo.dao.database.repository.CountryDAORepository
+import com.kodeco.android.countryinfo.dao.database.repository.CountryDAORepositoryImpl
 import com.kodeco.android.countryinfo.network.CountryService
 import com.kodeco.android.countryinfo.network.adapters.CountryAdapter
 import com.kodeco.android.countryinfo.repositories.CountryRepository
@@ -33,6 +35,10 @@ class MainActivity : ComponentActivity() {
             CountriesDatabase.buildDatabase(
                 context = this@MainActivity
             )
+        }
+
+        val daoRepository: CountryDAORepository by lazy {
+            CountryDAORepositoryImpl(database.countiesDAO())
         }
 
         val service: CountryService = retrofit.create(CountryService::class.java)
