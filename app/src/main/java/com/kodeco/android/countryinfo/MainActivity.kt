@@ -3,6 +3,7 @@ package com.kodeco.android.countryinfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.kodeco.android.countryinfo.dao.database.CountriesDatabase
 import com.kodeco.android.countryinfo.network.CountryService
 import com.kodeco.android.countryinfo.network.adapters.CountryAdapter
 import com.kodeco.android.countryinfo.repositories.CountryRepository
@@ -14,6 +15,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MainActivity : ComponentActivity() {
+    companion object {
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,6 +29,11 @@ class MainActivity : ComponentActivity() {
             .baseUrl("https://restcountries.com/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
+        val database: CountriesDatabase by lazy {
+            CountriesDatabase.buildDatabase(
+                context = this@MainActivity
+            )
+        }
 
         val service: CountryService = retrofit.create(CountryService::class.java)
         val repository: CountryRepository = CountryRepositoryImpl(service)
