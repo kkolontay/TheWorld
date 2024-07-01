@@ -1,10 +1,13 @@
 package com.kodeco.android.countryinfo.dao.database.repository
 import com.kodeco.android.countryinfo.models.Country
+import kotlinx.coroutines.flow.Flow
 
 interface CountryDAORepository {
-    fun getCountries(): List<Country>
+   fun getCountries(): Flow<List<Country>>
 
-    fun addCountry(country: Country)
+   suspend fun addCountries(country: List<Country>)
 
-    fun getCountry( name: String): Country
+   fun getCountry( name: String): Flow<Country>
+
+   suspend fun deleteAllCountries()
 }

@@ -1,8 +1,10 @@
 package com.kodeco.android.countryinfo
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.datastore.preferences.preferencesDataStore
 import com.kodeco.android.countryinfo.dao.database.CountriesDatabase
 import com.kodeco.android.countryinfo.dao.database.repository.CountryDAORepository
 import com.kodeco.android.countryinfo.dao.database.repository.CountryDAORepositoryImpl
@@ -16,10 +18,10 @@ import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class MainActivity : ComponentActivity() {
-    companion object {
 
-    }
+private const val USER_PREFERENCES = "theWorldPreferences"
+class MainActivity : ComponentActivity() {
+ private val Context.dataStore by preferencesDataStore(name = USER_PREFERENCES)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

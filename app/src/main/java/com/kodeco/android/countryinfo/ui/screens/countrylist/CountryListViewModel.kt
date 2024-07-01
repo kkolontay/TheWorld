@@ -1,5 +1,7 @@
 package com.kodeco.android.countryinfo.ui.screens.countrylist
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -12,7 +14,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class CountryListViewModel(
-    private val repository: CountryRepository,
+    private val repository: CountryRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<CountryListState>(CountryListState.Loading)
