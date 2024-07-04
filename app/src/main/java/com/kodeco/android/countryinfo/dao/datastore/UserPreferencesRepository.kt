@@ -39,9 +39,11 @@ class UserPreferencesRepository(
     suspend fun toggleRotationMode(toggle: Boolean) = dataStore.edit {
         it[PreferencesKeys.isRotateMode] = toggle
     }
+
     suspend fun toggleLocalStore(toggle: Boolean) = dataStore.edit {
         it[PreferencesKeys.localStoreEnable] = toggle
     }
+
     suspend fun toggleFavoriteFeature(toggle: Boolean) = dataStore.edit {
         it[PreferencesKeys.favoriteFeatureEnabled] = toggle
     }

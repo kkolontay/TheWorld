@@ -1,5 +1,6 @@
 package com.kodeco.android.countryinfo.ui.nav
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -7,6 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.kodeco.android.countryinfo.dao.database.repository.CountryDAORepository
+import com.kodeco.android.countryinfo.dao.datastore.UserPreferencesRepository
 import com.kodeco.android.countryinfo.repositories.CountryRepository
 import com.kodeco.android.countryinfo.ui.screens.Screen
 import com.kodeco.android.countryinfo.ui.screens.about.AboutScreen
@@ -18,6 +21,9 @@ import com.kodeco.android.countryinfo.ui.screens.countrylist.CountryListViewMode
 @Composable
 fun CountryInfoNavHost(
     repository: CountryRepository,
+    daoRepository: CountryDAORepository,
+    userPreferencesRepository: UserPreferencesRepository,
+    context: Context
 ) {
     val navController = rememberNavController()
 
@@ -27,6 +33,8 @@ fun CountryInfoNavHost(
                 viewModel = viewModel(
                     factory = CountryListViewModel.CountryInfoViewModelFactory(
                         repository = repository,
+                        daoRepository = daoRepository,
+                        context = context
                     ),
                 ),
                 onCountryRowTap = { countryIndex ->

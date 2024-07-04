@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.Flow
 interface CountriesDAO {
     @Transaction
     @Query( "SELECT * FROM countries")
-    fun getCountries(): Flow<List<Country>>
+    suspend fun getCountries(): List<Country>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCountries(country: List<Country>)
 
     @Transaction
     @Query("SELECT * FROM countries WHERE commonName = :name ")
-    fun getCountry( name: String): Flow<Country>
+     suspend fun getCountry( name: String): Country
 
     @Query("DELETE FROM countries")
     suspend fun deleteAllCountries()

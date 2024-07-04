@@ -5,11 +5,11 @@ import com.kodeco.android.countryinfo.models.Country
 import kotlinx.coroutines.flow.Flow
 
 class CountryDAORepositoryImpl(private val countriesDao: CountriesDAO): CountryDAORepository {
-    override fun getCountries(): Flow<List<Country>> = countriesDao.getCountries()
+    override suspend fun getCountries(): List<Country> = countriesDao.getCountries()
 
     override suspend fun addCountries(country: List<Country>) = countriesDao.addCountries(country)
 
-    override fun getCountry(name: String): Flow<Country> =  countriesDao.getCountry(name)
+    override suspend fun getCountry(name: String): Country =  countriesDao.getCountry(name)
 
     override suspend fun deleteAllCountries() = countriesDao.deleteAllCountries()
 }

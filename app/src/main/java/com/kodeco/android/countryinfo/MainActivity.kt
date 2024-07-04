@@ -8,6 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.kodeco.android.countryinfo.dao.database.CountriesDatabase
 import com.kodeco.android.countryinfo.dao.database.repository.CountryDAORepository
 import com.kodeco.android.countryinfo.dao.database.repository.CountryDAORepositoryImpl
+import com.kodeco.android.countryinfo.dao.datastore.UserPreferencesRepository
 import com.kodeco.android.countryinfo.network.CountryService
 import com.kodeco.android.countryinfo.network.adapters.CountryAdapter
 import com.kodeco.android.countryinfo.repositories.CountryRepository
@@ -43,12 +44,17 @@ class MainActivity : ComponentActivity() {
             CountryDAORepositoryImpl(database.countiesDAO())
         }
 
+        val userPreferencesRepository: UserPreferencesRepository by lazy {
+            UserPreferencesRepository(dataStore, context = this@MainActivity)
+        }
+
         val service: CountryService = retrofit.create(CountryService::class.java)
         val repository: CountryRepository = CountryRepositoryImpl(service)
 
+
         setContent {
             MyApplicationTheme {
-                CountryInfoNavHost(repository = repository)
+                CountryInfoNavHost(repository = repository, daoRepository = daoRepository, userPreferencesRepository, context = this)
             }
         }
     }
